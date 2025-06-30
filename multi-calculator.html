@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <table border="1">
+            <tr>
+                <td colspan="4">
+                    <input type="text" id="inputBox" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td onclick="btnACPressed()">AC</td>
+                <!---OPEN BRACKETS-->
+                <td  onclick="operatorBtnPressed('(')">(</td> 
+                 <!---CLOSE BRACKETS---->
+                 <td onclick="operatorBtnPressed(')')">)</td>
+                <td onclick="operatorBtnPressed('%')">%</td>
+            </tr>
+            <tr>
+                <td onclick="digitBtnPressed(7)">7</td>
+                <td onclick="digitBtnPressed(8)">8</td>
+                <td onclick="digitBtnPressed(9)">9</td>
+                <td onclick="operatorBtnPressed('*')">*</td>
+            </tr>
+            <tr>
+                <td onclick="digitBtnPressed(4)">4</td>
+                <td onclick="digitBtnPressed(5)">5</td>
+                <td onclick="digitBtnPressed(6)">6</td>
+                <td onclick="operatorBtnPressed('-')">-</td>
+            </tr>
+            <tr>
+                <td onclick="digitBtnPressed(1)">1</td>
+                <td onclick="digitBtnPressed(2)">2</td>
+                <td onclick="digitBtnPressed(3)">3</td>
+                <td onclick="operatorBtnPressed('+')">+</td>
+            </tr>
+            <tr>
+                <td>,</td>
+                <td onclick="digitBtnPressed(0)">0</td>
+                <td onclick="operatorBtnPressed('/')">/</td>
+                <td onclick="equalsBtnPressed()">=</td>
+            </tr>
+        </table>
+
+        <script>
+
+            ///// Globals 
+           var newLine=true;
+           var lastAnswer=""; // lets user re-use the previous result if they wish 
+
+        // Digit buttons //
+        function digitBtnPressed(button){
+            const input=document.getElementById("inputBox");
+
+            if (newLine){  /// start a new number or expression///
+                input.value=button;
+                newLine=false;
+            }else{
+                input.value +=button;
+            }
+        }
+
+//////////////Operator button////////////////// 
+        function operatorBtnPressed(operator){
+            const input=document.getElementById("inputBox");
+            /// if user pressed the operator right after the "=", continue from the line////
+            if(newLine) newLine=false;
+            /// handles special keys you added///
+            if(operator==='%'){
+                input.value +="/100"; ///convert "percent " into "/100" so eval understands it///
+            }else if (operator===','){
+                input.value+= "."; ///treat the comma as a decimal point////
+            }else{
+                input.value += operator; /// normal operator or brackets/// 
+            }
+        }
+
+        /////AC BUTTON ////
+        function btnACPressed(){
+            document.getElementById("inputBox").value= "";///allows the screen to be empty and start on any button pressed///
+            newLine = true;
+            lastAnswer = ""; 
+        }
+
+        //// EQUALS BUTTON /////
+        function equalsBtnPressed(){
+            const input=document.getElementById("inputBox");
+            let expr = input.value;
+            try{
+                let results = eval(expr);
+                input.value = results;
+                lastAnswer  = results;
+        }catch(e){
+            input.value = "Error";
+        }
+        newLine=true;
+    }
+        </script>
+    </body>
+</html>
